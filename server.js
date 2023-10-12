@@ -3,6 +3,7 @@ const express = require('express');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cors = require('cors');
+const fetch = require('node-fetch');  // Added this line
 
 const app = express();
 app.use(express.static('public'));
@@ -13,11 +14,10 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.REDIRECT_URI,
 }, (token, tokenSecret, profile, done) => {
-  // In a real application, you might store user info in a database here
   return done(null, profile);
 }));
 
-app.use(cors());  // Enable CORS for all routes
+app.use(cors());
 
 app.get('/start-auth',
   passport.authenticate('google', {
@@ -30,8 +30,7 @@ app.get('/start-auth',
 app.get('/oauth2callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
-    // Successful authentication
-    res.redirect(`https://your-extension-url.com/?token=${req.user.token}`);  // Redirect back to your extension
+    res.redirect(`https://your-actual-extension-url.com/?token=${req.user.token}`);
   }
 );
 
