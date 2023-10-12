@@ -9,7 +9,14 @@ passport.use(new GoogleStrategy({
   return done(null, profile);
 }));
 
-module.exports = passport.authenticate('google', {
+module.exports = (req, res, next) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Call the passport middleware
+  return passport.authenticate('google', {
     scope: [
       'openid',
       'email',
@@ -20,4 +27,5 @@ module.exports = passport.authenticate('google', {
       'https://www.googleapis.com/auth/tasks'
     ],
     failureRedirect: '/'
-  });
+  })(req, res, next);
+};

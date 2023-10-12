@@ -14,6 +14,10 @@ passport.use(new GoogleStrategy({
 }));
 
 module.exports = (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   passport.authenticate('google', { failureRedirect: '/' }, function(err, user, info) {
     if (err) {
       console.error("Authentication Error: ", err);
