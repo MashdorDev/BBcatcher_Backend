@@ -1,0 +1,16 @@
+{
+    "addons": {
+      "bbcatcher@dorzairi.com": {
+        "updates": [
+          {
+            "version": "0.0.2",
+            "update_link": "b-bcatcher-backend.vercel.app/updates/bbcatcher-0.0.2.xpi",
+            "update_hash": "sha256:base64hashvalue",
+            "applications": {
+              "gecko": { "strict_min_version": "42.0" }
+            }
+          }
+        ]
+      }
+    }
+  }

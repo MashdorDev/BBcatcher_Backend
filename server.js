@@ -5,6 +5,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cors = require('cors');
 
 const app = express();
+app.use(express.static('public'));
 
 // Setup passport
 passport.use(new GoogleStrategy({
