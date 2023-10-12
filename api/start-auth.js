@@ -9,4 +9,15 @@ passport.use(new GoogleStrategy({
   return done(null, profile);
 }));
 
-module.exports = passport.authenticate('google', { failureRedirect: '/' });
+module.exports = passport.authenticate('google', {
+    scope: [
+      'openid',
+      'email',
+      'profile',
+      'https://www.googleapis.com/auth/calendar',
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/tasks'
+    ],
+    failureRedirect: '/'
+  });
