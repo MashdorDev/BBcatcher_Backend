@@ -6,7 +6,9 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.REDIRECT_URI,
 }, (token, tokenSecret, profile, done) => {
-  // Assuming the token is part of the profile object
+  if (!profile) {
+    return done(new Error("Profile is null"));
+  }
   profile.token = token;
   return done(null, profile);
 }));
@@ -14,24 +16,25 @@ passport.use(new GoogleStrategy({
 module.exports = (req, res) => {
   passport.authenticate('google', { failureRedirect: '/' }, function(err, user, info) {
     if (err) {
-      // Handle error
+      console.error("Authentication Error: ", err);
       return res.status(400).json({ error: 'Authentication failed' });
     }
     if (!user) {
-      // Handle failed authentication
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(400).json({ error: 'Authentication failed' });
+    }
+    if (!user.token) {
+      return res.status(400).json({ error: 'Token not found' });
     }
 
     const token = user.token;
     const browser = req.query.browser;
-
     let redirectUrl = '';
+
     if (browser === 'chrome') {
       redirectUrl = `chrome-extension://bbcatcher@dorzairi.com/handleToken.html?token=${token}`;
     } else if (browser === 'firefox') {
       redirectUrl = `moz-extension://bbcatcher@dorzairi.com/handleToken.html?token=${token}`;
     } else {
-      // Fallback or error handling
       redirectUrl = `https://b-bcatcher-backend.vercel.app/error.html`;
     }
 
