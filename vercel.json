@@ -1,3 +1,6 @@
 {
-    "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "/api" },
+      { "source": "/oauth2callback", "destination": "/oauth2callback" }
+    ]
 }
