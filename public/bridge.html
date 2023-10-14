@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      // Get token and browser type from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      console.log(urlParams);
+      const token = urlParams.get('token');
+      console.log(token);
+      const browser = urlParams.get('browser');
+        console.log(browser);
+      // Target origin for the extension
+      const targetOrigin = browser === 'firefox' ? 'moz-extension://f31dd51c-c894-4ac4-a549-9bfe804f7e1e' : 'chrome-extension://bbcatcher@dorzairi.com';
+
+
+      localStorage.setItem('token', token);
+      console.log(localStorage.getItem('token'));
+      // Close the current window
+    //   window.close();
+    </script>
+  </body>
+</html>

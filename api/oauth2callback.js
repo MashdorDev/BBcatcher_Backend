@@ -1,47 +1,41 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.JWT_SECRET;
 
+// Initialize passport strategy
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.REDIRECT_URI,
+  callbackURL: process.env.REDIRECT_URI
 }, (token, tokenSecret, profile, done) => {
-  if (!profile) {
-    return done(new Error("Profile is null"));
-  }
+  // Here, you can choose what information you want to store in the user session
   profile.token = token;
   return done(null, profile);
 }));
 
 module.exports = (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  try {
+    // Decode the state parameter to get the browser info
+    const decoded = jwt.verify(req.query.state, SECRET, { algorithms: ['HS256'], ignoreExpiration: true });
+    const browser = decoded.browser;
 
-  passport.authenticate('google', { failureRedirect: '/' }, function(err, user, info) {
-    if (err) {
-      console.error("Authentication Error: ", err);
-      return res.status(400).json({ error: 'Authentication failed' });
-    }
-    if (!user) {
-      return res.status(400).json({ error: 'Authentication failed' });
-    }
-    if (!user.token) {
-      return res.status(400).json({ error: 'Token not found' });
-    }
+    passport.authenticate('google', { failureRedirect: '/' }, (err, user, info) => {
+      if (err) return res.status(400).json({ error: "Authentication failed" });
 
-    const token = user.token;
-    const browser = req.query.browser;
-    let redirectUrl = '';
+      console.log(user);
 
-    if (browser === 'chrome') {
-      redirectUrl = `chrome-extension://bbcatcher@dorzairi.com/handleToken.html?token=${token}`;
-    } else if (browser === 'firefox') {
-      redirectUrl = `moz-extension://bbcatcher@dorzairi.com/handleToken.html?token=${token}`;
-    } else {
-      redirectUrl = `https://b-bcatcher-backend.vercel.app/error.html`;
-    }
+      if (browser === 'chrome' || browser === 'firefox') {
+        // Redirect to the bridge.html page hosted on your own Vercel app
+        res.redirect(`https://b-bcatcher-backend.vercel.app/bridge.html?token=${user.token}&browser=${browser}`);
+      } else {
+        res.redirect('/error');
+      }
 
-    res.redirect(redirectUrl);
-  })(req, res);
+
+    })(req, res);
+  } catch (err) {
+    console.error("Failed to decode JWT or retrieve browser", err);
+    res.status(400).json({ error: "Invalid state parameter" });
+  }
 };
