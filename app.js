@@ -15,7 +15,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // Endpoint to download the XPI file
 app.get('/download', (req, res) => {
-  const file = path.join(__dirname, 'static/your-extension.xpi');
+  const file = path.join(__dirname, 'static/0ecd3cda2dd64a7bb116-0.0.3.xpi');
   res.download(file);
 });
 
