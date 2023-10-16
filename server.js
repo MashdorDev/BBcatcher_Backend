@@ -6,6 +6,10 @@ const path = require('path');
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join('public/index.html'), { root: __dirname });
+});
+
 // Route to serve the .xpi file with the correct Content-Type header
 app.get('/updates/BB.xpi', (req, res) => {
     console.log("updates/BB.xpi");
@@ -27,7 +31,7 @@ app.get('/get-manifest', (req, res) => {
 
 // Route to serve privacypolicy.html
 app.get('/PrivacyPolicy', (req, res) => {
-  res.sendFile(path.join('public/privacypolicy.html'), { root: __dirname });
+  res.sendFile('./public/privacypolicy.html', { root: __dirname });
 });
 
 // Start the server
