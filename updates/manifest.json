@@ -1,0 +1,55 @@
+{
+  "name": "BBcatcher",
+  "version": "0.0.2",
+  "manifest_version": 2,
+  "description": "Brings all you Exams quiz's and homework to your schedule ",
+  "icons": {
+    "64": "icons/icon.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "bbcatcher@dorzairi.com",
+      "update_url": "https://example.com/updates.json"
+    }
+  },
+  "background": {
+    "scripts": [
+      "background/declare_browserAPI.js",
+      "background/main.js",
+      "background/authorize.js",
+      "background/userinfo.js"
+    ]
+  },
+  "permissions": [
+    "<all_urls>",
+    "webNavigation",
+    "tabs",
+    "activeTab",
+    "identity",
+    "notifications",
+    "*://www.googleapis.com/*",
+    "*://accounts.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://learn.humber.ca/ultra/*"],
+      "js": ["scripts/content_scripts.js"],
+      "css": ["styles/content_script.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'",
+  "browser_action": {
+    "default_icon": {
+      "128": "icons/iconx128.png",
+      "80": "icons/iconx80.png",
+      "64": "icons/iconx64.png",
+      "40": "icons/iconx40.png",
+      "32": "icons/iconx32.png",
+      "16": "icons/iconx16.png"
+
+    },
+    "default_title": "BBcatcher",
+    "default_popup": "popup/popup.html"
+  }
+}
