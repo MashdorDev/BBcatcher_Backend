@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 
 // Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'src', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to serve the .xpi file with the correct Content-Type header
 app.get('/updates/BB.xpi', (req, res) => {
