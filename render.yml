@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: bbcatcher
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    dockerfilePath: ./Dockerfile
