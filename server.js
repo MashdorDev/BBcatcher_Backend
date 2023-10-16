@@ -7,7 +7,7 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join('public/index.html'), { root: __dirname });
+  res.sendFile(path.join('./public/index.html'), { root: __dirname });
 });
 
 // Route to serve the .xpi file with the correct Content-Type header
@@ -26,7 +26,7 @@ app.get('/installBB', (req, res) => {
 // Route to handle the GET request and send back the manifest file
 app.get('/get-manifest', (req, res) => {
   // Set the path to your manifest.json file
-  res.sendFile(path.join('manifest.json'), { root: __dirname });
+  res.render(path.join('manifest.json'), { root: __dirname });
 });
 
 // Route to serve privacypolicy.html
