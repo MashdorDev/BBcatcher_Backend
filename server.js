@@ -16,18 +16,18 @@ app.get('/updates/BB.xpi', (req, res) => {
 // Route to serve installbb.html
 app.get('/installBB', (req, res) => {
     console.log("installBB");
-  res.sendFile(path.join(__dirname,'public', 'installBB.html'));
+  res.sendFile(path.join(__dirname,'public', 'installbb.html'));
 });
 
 // Route to handle the GET request and send back the manifest file
 app.get('/get-manifest', (req, res) => {
   // Set the path to your manifest.json file
-  res.sendFile(path.join(__dirname,'src', 'updates', 'manifest.json'));
+  res.sendFile(path.join(__dirname, 'updates', 'manifest.json'));
 });
 
 // Route to serve privacypolicy.html
 app.get('/PrivacyPolicy', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src','public', 'privacypolicy.html'));
+  res.sendFile(path.join(__dirname, 'public', 'privacypolicy.html'));
 });
 
 // Start the server
