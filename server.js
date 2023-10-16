@@ -16,7 +16,7 @@ app.get('/updates/BB.xpi', (req, res) => {
 // Route to serve installbb.html
 app.get('/installBB', (req, res) => {
     console.log("installBB");
-  res.sendFile(path.join(__dirname,'public', 'installbb.html'));
+  res.sendFile(path.join(__dirname,'public', 'installBB.html'));
 });
 
 // Route to handle the GET request and send back the manifest file
